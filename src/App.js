@@ -23,7 +23,7 @@ function App({authState}) {
   }, []);
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'signup'}>
+      <Stack.Navigator initialRouteName={'signin'}>
         <Stack.Screen name="signup" component={Signup} />
         <Stack.Screen name="signin" component={SignIn} />
         <Stack.Screen name="home" component={Home} />

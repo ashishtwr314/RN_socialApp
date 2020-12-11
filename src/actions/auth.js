@@ -69,6 +69,7 @@ export const signIn = (data, navigation) => async (dispatch) => {
   auth()
     .signInWithEmailAndPassword(emailAddress, password)
     .then((user) => {
+      console.log(user);
       if (user) {
         dispatch({
           type: IS_AUTHNTICATED,
