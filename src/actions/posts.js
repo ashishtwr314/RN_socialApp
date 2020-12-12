@@ -30,10 +30,13 @@ export const addPost = (data, navigation) => async (dispatch) => {
 export const showAllPost = (data, navigation) => async (dispatch) => {
   database()
     .ref('/posts')
-    .on('value', (snapshot) => {
-      dispatch({
-        type: SET_ALL_POST,
-        payload: Object.values(snapshot.val()),
-      });
+    .once('value')
+    .then((snapshot) => {
+      if (snapshot.val()) {
+        dispatch({
+          type: SET_ALL_POST,
+          payload: Object.values(snapshot.val()),
+        });
+      }
     });
 };

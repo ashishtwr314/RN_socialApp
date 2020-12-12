@@ -5,7 +5,10 @@ const initialState = [];
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_ALL_POST:
-      return [...state, ...action.payload];
+      console.log('ACTIONPAYLOAD', action.payload);
+      if (action.payload) {
+        return [...initialState, ...action.payload];
+      }
 
     default:
       return state;
