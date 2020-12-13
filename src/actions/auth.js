@@ -3,6 +3,7 @@ import database from '@react-native-firebase/database';
 import Snackbar from 'react-native-snackbar';
 import {
   IS_AUTHNTICATED,
+  SET_SINGIN_LOADER,
   SET_SINGUP_LOADER,
   SET_USER,
   SIGNUP_DONE,
@@ -51,19 +52,21 @@ export const singUp = (data, navigation) => async (dispatch) => {
         });
     })
     .catch((err) => {
-      Snackbar.show({
-        text: 'Failed to singIn',
-      });
       dispatch({
         type: SET_SINGUP_LOADER,
         payload: false,
       });
-      console.log(err);
-      console.log('USER SIGN UP FAILEDD');
+      Snackbar.show({
+        text: err.toString(),
+      });
     });
 };
 
 export const signIn = (data, navigation) => async (dispatch) => {
+  dispatch({
+    type: SET_SINGIN_LOADER,
+    payload: true,
+  });
   const {emailAddress, password} = data;
 
   auth()
@@ -79,10 +82,18 @@ export const signIn = (data, navigation) => async (dispatch) => {
           type: SET_USER,
           payload: user,
         });
+        dispatch({
+          type: SET_SINGIN_LOADER,
+          payload: false,
+        });
         navigation.push('home');
       } else {
         dispatch({
           type: IS_AUTHNTICATED,
+          payload: false,
+        });
+        dispatch({
+          type: SET_SINGIN_LOADER,
           payload: false,
         });
       }
@@ -90,10 +101,25 @@ export const signIn = (data, navigation) => async (dispatch) => {
     .catch((err) => {
       console.log(err);
       Snackbar.show({
-        text: 'Invalid Login',
+        text: err.toString(),
         backgroundColor: '#000000',
         textColor: '#fff',
       });
+      dispatch({
+        type: IS_AUTHNTICATED,
+        payload: false,
+      });
+      dispatch({
+        type: SET_SINGIN_LOADER,
+        payload: false,
+      });
+    });
+};
+
+export const logout = (data, navigation) => async (dispatch) => {
+  auth()
+    .signOut()
+    .then(() => {
       dispatch({
         type: IS_AUTHNTICATED,
         payload: false,

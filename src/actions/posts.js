@@ -1,9 +1,13 @@
 import auth, {firebase} from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import Snackbar from 'react-native-snackbar';
-import {SET_ALL_POST} from './actions.types';
+import {SET_ALL_POST, POST_UPLOADING} from './actions.types';
 
 export const addPost = (data, navigation) => async (dispatch) => {
+  dispatch({
+    type: POST_UPLOADING,
+    payload: true,
+  });
   const {emailAddress, image, caption, uid} = data;
   database()
     .ref(`/posts/${data.uid}`)
@@ -17,9 +21,17 @@ export const addPost = (data, navigation) => async (dispatch) => {
         text: 'Post Succesfully Added',
         backgroundColor: 'green',
       });
+      dispatch({
+        type: POST_UPLOADING,
+        payload: false,
+      });
       navigation.push('home');
     })
     .catch((err) => {
+      dispatch({
+        type: POST_UPLOADING,
+        payload: false,
+      });
       Snackbar.show({
         text: 'Failed to Upload Post',
         backgroundColor: 'red',

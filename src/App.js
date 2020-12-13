@@ -14,20 +14,29 @@ import SignIn from './Pages/SignIn';
 import Home from './Pages/Home';
 import {TextInput} from 'react-native-gesture-handler';
 import AddPost from './Pages/AddPost';
+import CustomHeader from './Pages/CustomHeader';
 
 function App({authState}) {
-  const dispatch = useDispatch();
-
   useEffect(() => {
     requestPermissions();
   }, []);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'signin'}>
-        <Stack.Screen name="signup" component={Signup} />
-        <Stack.Screen name="signin" component={SignIn} />
-        <Stack.Screen name="home" component={Home} />
-        <Stack.Screen name="addpost" component={AddPost} />
+      <Stack.Navigator
+        screenOptions={{header: (props) => <CustomHeader {...props} />}}
+        initialRouteName={'home'}>
+        {authState.isAuth ? (
+          <>
+            <Stack.Screen name="home" component={Home} />
+            <Stack.Screen name="addpost" component={AddPost} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="signup" component={Signup} />
+            <Stack.Screen name="signin" component={SignIn} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -13,10 +13,23 @@ function Home({navigation, showAllPost, postState}) {
   return (
     <>
       <ScrollView>
+        {console.log(postState)}
         <View style={{width: '80%', alignSelf: 'center'}}>
-          {postState
-            ? postState.map((post, idx) => <PostCard idx={idx} post={post} />)
-            : null}
+          {postState.posts ? (
+            postState.posts.map((post, idx) => (
+              <PostCard idx={idx} post={post} />
+            ))
+          ) : (
+            <Container
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+              }}>
+              <Spinner color="blue" />
+            </Container>
+          )}
         </View>
       </ScrollView>
       <Fab onPress={() => navigation.push('addpost')}>

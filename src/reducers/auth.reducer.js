@@ -1,5 +1,6 @@
 import {
   IS_AUTHNTICATED,
+  SET_SINGIN_LOADER,
   SET_SINGUP_LOADER,
   SET_USER,
   SIGNUP_DONE,
@@ -10,6 +11,7 @@ const initialState = {
   user: null,
   signUp: false,
   singUpLoader: false,
+  signInLoader: false,
 };
 
 export default (state = initialState, action) => {
@@ -38,6 +40,11 @@ export default (state = initialState, action) => {
         singUpLoader: action.payload,
       };
 
+    case SET_SINGIN_LOADER:
+      return {
+        ...state,
+        signInLoader: action.payload,
+      };
     default:
       return state;
   }

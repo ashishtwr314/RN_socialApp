@@ -1,4 +1,13 @@
-import {Button, Container, Form, Text, Item, View, Textarea} from 'native-base';
+import {
+  Button,
+  Container,
+  Form,
+  Text,
+  Item,
+  View,
+  Textarea,
+  Spinner,
+} from 'native-base';
 import {Image} from 'react-native';
 import React, {useState} from 'react';
 import ImagePicker from 'react-native-image-picker';
@@ -16,7 +25,7 @@ const options = {
     path: 'images',
   },
 };
-function AddPost({navigation, authState, addPost}) {
+function AddPost({navigation, authState, addPost, postState}) {
   const [postImage, setPostImage] = useState('');
   const [postCaption, setPostCaption] = useState('');
   const [postImageName, setPostImageName] = useState('');
@@ -61,6 +70,20 @@ function AddPost({navigation, authState, addPost}) {
       console.log('EKLSEEE');
     }
   };
+
+  if (postState.postUploading) {
+    return (
+      <Container
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+        }}>
+        <Spinner color="blue" />
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -108,6 +131,7 @@ function AddPost({navigation, authState, addPost}) {
 const mapStateToProps = (state) => {
   return {
     authState: state.authState,
+    postState: state.postState,
   };
 };
 
